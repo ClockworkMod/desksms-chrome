@@ -1,23 +1,16 @@
 {
-  "name":"DeskSMS for Chrome",
-  "version":"1.0",
+  "name":"DeskSMS - Send and Receive Texts Messages",
+  "version":"1.0.2",
   "description":"Send and receive text messages from Chrome using your own number! (Android phone required)",
   "browser_action":{
     "default_icon":"desksms.png",
     "popup":"popup.html"
   },
   "background_page":"background.html",
-  "content_scripts":[
-    { 
-      "matches":["http://www.google.com/*"],
-      "js":["jquery-1.6.1.min.js"]
-    }
-  ],
   "icons": {
       "48": "desksms.png"
   },
   "permissions": [
-    "notifications",
-    "http://*/"
+    "notifications"
   ]
 }
