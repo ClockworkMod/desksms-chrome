@@ -1,32 +1,7 @@
 <html>
-  <script src="client.js"></script>
   <script src="jquery-1.6.1.min.js"></script>
-  <script>
-    function readCookie(name){
-          name = name.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-          var regExp = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)','i'),
-              match = document.cookie.match(regExp);
-          return match && unescape(match[1]);
-    }
-
-      chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
-      $.get(desksms.BADGE_URL,function(data){
-        chrome.browserAction.setBadgeText({text:String('')});
-        document.cookie = 'date=' + data.date;
-        document.cookie = 'badge=' + '0';
-      },"jsonp");
-
-      setInterval(function(){
-        var date = readCookie('date');
-        $.get(desksms.BADGE_URL+'?after_date='+date,function(data){
-            if(data.badge)
-            { 
-              document.cookie = 'date='+ data.date;
-              var newBadge =parseInt(readCookie('badge')) +data.badge;
-              document.cookie = 'badge='+ newBadge;
-              chrome.browserAction.setBadgeText({text:String(newBadge)});
-            }
-        },"jsonp");
-    },10000);
-  </script>
+  <script src="jquery.cookie.js"></script>
+  <script src="jsonp.js"></script>
+  <script src="desksms.js"></script>
+  <script src="main.js"></script>
 </html>
