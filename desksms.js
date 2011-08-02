@@ -16,10 +16,7 @@ Conversation.prototype.addMessage = function(message) {
 
 var desksms = new function() {
   this.BASE_URL = "https://desksms.appspot.com";
-  this.INSECURE_BASE_URL = "http://desksms.appspot.com";
-  this.INSECURE_API_URL = this.INSECURE_BASE_URL + "/api/v1";
   this.API_URL = this.BASE_URL + "/api/v1";
-  this.INSECURE_USER_URL = this.INSECURE_API_URL + "/user/default";
   this.USER_URL = this.API_URL + "/user/default";
   this.SETTINGS_URL = this.USER_URL + "/settings";
   this.SMS_URL = this.USER_URL + "/sms";
@@ -30,7 +27,7 @@ var desksms = new function() {
   this.LOGOUT_URL = this.API_URL + "/user/logout?continue=%s";
   this.WHOAMI_URL = this.API_URL + "/user/whoami";
   this.PROXY_URL = this.API_URL + "/proxy?proxied=%s";
-  this.BADGE_URL = this.INSECURE_USER_URL + "/badge";
+  this.BADGE_URL = this.USER_URL + "/badge";
   
   this.conversations = {};
   
