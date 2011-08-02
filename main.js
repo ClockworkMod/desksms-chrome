@@ -6,11 +6,14 @@ $(document).ready(function() {
         var badgeCount = $.cookie('badge');
         try {
           badgeCount = parseInt(badgeCount);
+          if (isNaN(badgeCount))
+            badgeCount = 0;
         }
         catch (e) {
           badgeCount = 0;
         }
         badgeCount += data.badge;
+        $.cookie('badge', badgeCount);
         chrome.browserAction.setBadgeText({ text: String(badgeCount) } );
       }
     });
