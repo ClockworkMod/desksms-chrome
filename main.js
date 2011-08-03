@@ -1,6 +1,5 @@
-$(document).ready(function() {
-  chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
-  var badger = function() {
+var setupPush = function() {
+  desksms.push(function(err, data) {
     desksms.badge(function(err, data) {
       if(data && data.badge) {
         var badgeCount = $.cookie('badge');
@@ -17,7 +16,22 @@ $(document).ready(function() {
         chrome.browserAction.setBadgeText({ text: String(badgeCount) } );
       }
     });
-  };
-  setInterval(badger, 10000);
-  badger();
+  });
+}
+
+$(document).ready(function() {
+  chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
+  
+  var whoamiLooper = function() {
+    desksms.whoami(function(err, data) {
+      if (err || !data.email) {
+        setTimeout(whoamiLooper, 5000);
+        return;
+      }
+      
+      setupPush();
+    });
+  }
+
+  whoamiLooper();
 });
