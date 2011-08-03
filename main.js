@@ -1,5 +1,5 @@
 var setupPush = function() {
-  desksms.push(function(err, data) {
+  var badger = function() {
     desksms.badge(function(err, data) {
       if(data && data.badge) {
         var badgeCount = $.cookie('badge');
@@ -16,7 +16,14 @@ var setupPush = function() {
         chrome.browserAction.setBadgeText({ text: String(badgeCount) } );
       }
     });
+  }
+  
+  desksms.push(function(err, data) {
+    badger();
   });
+  
+  // kick it off right away to get a timestamp
+  badger();
 }
 
 $(document).ready(function() {
