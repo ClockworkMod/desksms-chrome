@@ -101,7 +101,7 @@ var desksms = new function() {
         desksms.push(cb);
       }, 30000);
     }
-    
+
     if (!desksms.registrationId) {
       cb('no registration');
       scheduleNextPushConnection();
@@ -118,7 +118,7 @@ var desksms = new function() {
     }).complete(function() {
     });
   }
-  
+
   this.getOutbox = function(options, cb) {
     jsonp(this.OUTBOX_URL, cb, options);
   }
