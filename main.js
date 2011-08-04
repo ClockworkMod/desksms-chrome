@@ -19,6 +19,7 @@ var setupPush = function() {
   }
   
   desksms.push(function(err, data) {
+    console.log('badger');
     badger();
   });
   
