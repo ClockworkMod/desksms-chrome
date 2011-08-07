@@ -11,6 +11,9 @@ var setupPush = function() {
         catch (e) {
           badgeCount = 0;
         }
+        if (badgeCount) {
+          $('#notification-sound')[0].play();
+        }
         badgeCount += data.badge;
         $.cookie('badge', badgeCount);
         chrome.browserAction.setBadgeText({ text: String(badgeCount) } );
@@ -33,7 +36,7 @@ $(document).ready(function() {
   var whoamiLooper = function() {
     desksms.whoami(function(err, data) {
       if (err || !data.email) {
-        setTimeout(whoamiLooper, 5000);
+        setTimeout(whoamiLooper, 30000);
         return;
       }
       
