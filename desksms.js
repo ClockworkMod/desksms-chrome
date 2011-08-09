@@ -5,6 +5,7 @@ function Conversation(number) {
   this.messages = {};
   this.latestMessageDate = 0;
   this.contact = contacts.findNumber(number);
+  this.read = false;
 }
 
 Conversation.prototype.addMessage = function(message) {
@@ -23,38 +24,40 @@ var desksms = new function() {
   this.CALL_URL = this.USER_URL + "/call";
   this.DIAL_URL = this.USER_URL + "/dial";
   this.OUTBOX_URL = this.USER_URL + "/outbox";
-  this.LOGIN_URL = this.API_URL + "/user/login?continue=%s";
-  this.LOGOUT_URL = this.API_URL + "/user/logout?continue=%s";
-  this.WHOAMI_URL = this.API_URL + "/user/whoami";
+  this.LOGIN_URL = this.API_URL + "/login?continue=%s";
+  this.LOGOUT_URL = this.API_URL + "/logout?continue=%s";
+  this.WHOAMI_URL = this.USER_URL + "/whoami";
   this.PROXY_URL = this.API_URL + "/proxy?proxied=%s";
   this.BADGE_URL = this.USER_URL + "/badge";
-  
+
   this.conversations = {};
-  
+
   this.getCrossOriginImage = function(image) {
     return sprintf(this.PROXY_URL, encodeURIComponent(image))
   }
-  
+
   this.getLoginUrl = function() {
     return sprintf(this.LOGIN_URL, encodeURIComponent(window.location.href));
   }
-  
+
   this.getLogoutUrl = function() {
     return sprintf(this.LOGOUT_URL, encodeURIComponent(window.location.href));
   }
-  
+
   this.registrationId = null;
   this.email = null;
+  this.buyer_id = null;
   this.whoami = function(cb) {
     jsonp(this.WHOAMI_URL, function(err, data) {
       if (data) {
         desksms.email = data.email;
         desksms.registrationId = data.registration_id;
+        desksms.buyer_id = data.buyer_id;
       }
       cb(err, data);
     });
   }
-  
+
   this.startConversation = function(number) {
     var convo = this.findConversation(number);
     if (convo)
@@ -82,6 +85,8 @@ var desksms = new function() {
       // bucket these into conversations
       $.each(data.data, function(index, message) {
         var conversation = desksms.startConversation(message.number);
+        if (message.type == 'incoming')
+          conversation.read = false;
         conversation.addMessage(message);
       });
     }
@@ -108,14 +113,13 @@ var desksms = new function() {
       return;
     }
 
-    var hdr = $.get('http://desksmspush.deployfu.com:9980/wait/' + encodeURIComponent(desksms.registrationId) + "?nonce=" + Date.now(), function(data) {
+    $.get('http://desksmspush.deployfu.com:9980/wait/' + encodeURIComponent(desksms.buyer_id) + "?nonce=" + new Date().getTime(), function(data) {
       desksms.push(cb);
       cb(null, data);
     })
     .error(function(err) {
       scheduleNextPushConnection();
       cb(err);
-    }).complete(function() {
     });
   }
 
