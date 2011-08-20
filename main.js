@@ -11,7 +11,8 @@ var setupPush = function() {
         catch (e) {
           badgeCount = 0;
         }
-        $('#notification-sound')[0].play();
+        if ($.cookie('play-sound'))
+          $('#notification-sound')[0].play();
         badgeCount += data.badge;
         $.cookie('badge', badgeCount);
         chrome.browserAction.setBadgeText({ text: String(badgeCount) } );
