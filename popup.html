@@ -6,12 +6,15 @@
       chrome.browserAction.setBadgeText({text:''});
       $.cookie('badge', 0);
       $(document).ready(function() {
-        $('#iframe').attr('src', 'http://www.clockworkmod.com/desksms/index.html?refresh=' + new Date().getTime() + '#extension=chrome')
+        $('#iframe').attr('src', 'https://desksms.deployfu.com/#extension=chrome')
       });
     </script>
+    <style type="text/css">
+      body {width:640; height:500;}
+    </style>
   </head>
   <body>
-      <iframe id='iframe' height="500" width="640">
+      <iframe id='iframe' height="100%" width="100%" frameborder="0">
       <!-- <iframe src="http://localhost:3001/index.html#extension=chrome" height="600" width="400"> -->
     </iframe>
   </body>
