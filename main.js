@@ -2,7 +2,7 @@ var setupPush = function() {
   var badger = function() {
     desksms.badge(function(err, data) {
       if(data && data.badge) {
-        var badgeCount = $.cookie('badge');
+        var badgeCount = localStorage['badge'];
         try {
           badgeCount = parseInt(badgeCount);
           if (isNaN(badgeCount))
@@ -11,10 +11,13 @@ var setupPush = function() {
         catch (e) {
           badgeCount = 0;
         }
-        if ($.cookie('play-sound'))
-          $('#notification-sound')[0].play();
+        var sound = localStorage['play-sound'];
+        if (!sound)
+          sound = 'None';
+        if (sound != 'None')
+          $('#notification-' + sound)[0].play();
         badgeCount += data.badge;
-        $.cookie('badge', badgeCount);
+        localStorage['badge'] = badgeCount;
         chrome.browserAction.setBadgeText({ text: String(badgeCount) } );
       }
     });

@@ -4,7 +4,7 @@
     <script src="jquery.cookie.js" type="text/javascript"></script>
     <script type="text/javascript">
       chrome.browserAction.setBadgeText({text:''});
-      $.cookie('badge', 0);
+      localStorage['badge'] = 0;
       $(document).ready(function() {
         $('#iframe').attr('src', 'https://desksms.deployfu.com/#extension=chrome')
       });
