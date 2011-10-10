@@ -1,5 +1,5 @@
 var setSound = function(sound) {
-  if (sound == null || sound == '' || sound === localStorage['play-sound'])
+  if (sound == null || sound == '')
     return;
   localStorage['play-sound'] = sound;
   $("#notification").remove();
