@@ -35,16 +35,26 @@ var setupPush = function() {
 $(document).ready(function() {
   chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
   
-  var whoamiLooper = function() {
+  var whoamiChecker = function() {
     desksms.whoami(function(err, data) {
       if (err || !data.email) {
-        setTimeout(whoamiLooper, 30000);
+        console.log('login fail.');
         return;
       }
-      
+
+      console.log('successfully logged in.');
+
+      // prevent further whoamis from being called once logged in
+      whoamiChecker = null;
       setupPush();
     });
   }
 
-  whoamiLooper();
+  whoamiChecker();
+
+  chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+    if (request["event"] == "login" && whoamiChecker) {
+      whoamiChecker();
+    }
+  });
 });

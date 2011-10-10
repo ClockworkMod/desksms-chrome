@@ -10,6 +10,12 @@
   "icons": {
       "48": "desksms.png"
   },
+  "content_scripts": [
+    {
+      "matches": ["https://desksms.appspot.com/*"],
+      "js": ["desksms-contentscript.js"]
+    }
+  ],
   "permissions": [
     "notifications"
   ]
