@@ -1,3 +1,12 @@
+var setSound = function(sound) {
+  if (sound == null || sound == '' || sound === localStorage['play-sound'])
+    return;
+  localStorage['play-sound'] = sound;
+  $("#notification").remove();
+  var audio = $("<audio id='notification'><source src='http://desksms.appspot.com/notifications/" + sound.replace("-", ".") + "'></source></audio>");
+  $("#body").append(audio);
+}
+
 var setupPush = function() {
   var badger = function() {
     desksms.badge(function(err, data) {
@@ -12,10 +21,13 @@ var setupPush = function() {
           badgeCount = 0;
         }
         var sound = localStorage['play-sound'];
-        if (!sound)
-          sound = 'None';
-        if (sound != 'None')
-          $('#notification-' + sound)[0].play();
+        if (sound && sound != '') {
+          var notification = $('#notification');
+          if (notification.length > 0) {
+            notification = notification[0];
+            notification.play();
+          }
+        }
         badgeCount += data.badge;
         localStorage['badge'] = badgeCount;
         chrome.browserAction.setBadgeText({ text: String(badgeCount) } );
@@ -35,6 +47,8 @@ var setupPush = function() {
 $(document).ready(function() {
   chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
   
+  setSound(localStorage['play-sound']);
+  
   var whoamiChecker = function() {
     desksms.whoami(function(err, data) {
       if (err || !data.email) {
@@ -53,8 +67,12 @@ $(document).ready(function() {
   whoamiChecker();
 
   chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    if (request["event"] == "login" && whoamiChecker) {
+    var e = request['event'];
+    if (e == "login" && whoamiChecker) {
       whoamiChecker();
+    }
+    else if (e == "sound") {
+      setSound(request.sound);
     }
   });
 });
