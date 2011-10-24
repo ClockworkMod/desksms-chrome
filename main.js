@@ -13,19 +13,20 @@ var setupPush = function() {
     if (data.envelope) {
       var incomingMessages = 0;
       $.each(data.envelope.data, function(index, message) {
-        if (message.type == 'incoming')
+        if (message.type == 'incoming') {
           incomingMessages++;
 
-        var icon = 'http://desksms.appspot.com/images/desksms-small.png';
-        var name = message.name;
-        if (!name)
-          name = message.number;
-        var title = "SMS Received: " + name;
-        var notification = webkitNotifications.createNotification(icon, title, message.message);
-        notification.show();
-        setTimeout(function() {
-          notification.cancel();
-        }, 10000);
+          var icon = 'http://desksms.appspot.com/images/desksms-small.png';
+          var name = message.name;
+          if (!name)
+            name = message.number;
+          var title = "SMS Received: " + name;
+          var notification = webkitNotifications.createNotification(icon, title, message.message);
+          notification.show();
+          setTimeout(function() {
+            notification.cancel();
+          }, 10000);
+        }
       });
       
       var badgeCount = localStorage['badge'];
