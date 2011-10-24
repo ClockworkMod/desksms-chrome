@@ -2,11 +2,18 @@
   console.log('desksms content script started.');
   
   var sound;
+  var toast;
   function settingsLooper() {
     var newSound = localStorage['play-sound'];
     if (newSound != sound) {
       sound = newSound;
       chrome.extension.sendRequest({"event": "sound", "sound": sound });
+    }
+    
+    var newToast = localStorage['chrome-notifications'];
+    if (newToast != toast) {
+      toast = newToast;
+      chrome.extension.sendRequest({"event": "toast", "toast": toast });
     }
   }
   
