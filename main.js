@@ -29,6 +29,10 @@ var setupPush = function() {
         }
       });
       
+      // don't update the badge if nothing is incoming
+      if (incomingMessages == 0)
+        return;
+
       var badgeCount = localStorage['badge'];
       try {
         badgeCount = parseInt(badgeCount);
