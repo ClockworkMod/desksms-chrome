@@ -14,18 +14,22 @@ var setupPush = function() {
       var incomingMessages = 0;
       $.each(data.envelope.data, function(index, message) {
         if (message.type == 'incoming') {
-          incomingMessages++;
-
           var icon = 'http://desksms.appspot.com/images/desksms-small.png';
           var name = message.name;
           if (!name)
             name = message.number;
+          if (!name)
+            continue;
+          if (!message.message)
+            continue;
           var title = "SMS Received: " + name;
           var notification = webkitNotifications.createNotification(icon, title, message.message);
           notification.show();
           setTimeout(function() {
             notification.cancel();
           }, 10000);
+
+          incomingMessages++;
         }
       });
       
