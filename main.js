@@ -9,7 +9,7 @@ var setSound = function(sound) {
 
 var setupPush = function() {
   desksms.push(function(err, data) {
-    if (data.envelope) {
+    if (data && data.envelope) {
       var incomingMessages = 0;
       $.each(data.envelope.data, function(index, message) {
         if (message.type != 'incoming')
