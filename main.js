@@ -9,7 +9,6 @@ var setSound = function(sound) {
 
 var setupPush = function() {
   desksms.push(function(err, data) {
-    data = JSON.parse(data);
     if (data.envelope) {
       var incomingMessages = 0;
       $.each(data.envelope.data, function(index, message) {

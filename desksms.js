@@ -261,26 +261,10 @@ var desksms = new function() {
   }
   
   this.push = function(cb) {
-    var scheduleNextPushConnection = function() {
-      setTimeout(function() {
-        // try setting up a push connection again in 30 seconds
-        desksms.push(cb);
-      }, 30000);
-    }
-
-    if (!desksms.buyerId) {
-      cb({ error: 'no id', unregistered: true });
-      scheduleNextPushConnection();
-      return;
-    }
-
-    $.get('http://desksmspush.clockworkmod.com:9980/wait/' + encodeURIComponent(desksms.buyerId) + "?nonce=" + new Date().getTime(), function(data) {
-      desksms.push(cb);
-      cb(null, data);
-    })
-    .error(function(err) {
-      scheduleNextPushConnection();
-      cb(err);
+    var socket = io.connect('http://desksmspush.clockworkmod.com:9980');
+    socket.emit('registration_id', desksms.buyerId);
+    socket.on('push', function(msg) {
+      cb(null, msg);
     });
   }
 
