@@ -278,6 +278,7 @@ var desksms = new function() {
     socket.on('disconnect', function() {
       console.log('disconnected');
       cb('disconnected');
+      console.log(arguments);
     });
     socket.on('error', function() {
       console.log('error');
